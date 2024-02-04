@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+
+<body>
+    <h2>Register</h2>
+    <form id="register-form">
+        <label for="register-username">Username:</label>
+        <input type="text" id="register-username" name="register-username" required>
+
+        <label for="register-password">Password:</label>
+        <input type="password" id="register-password" name="register-password" required>
+
+        <label for="register-email">Email:</label>
+        <input type="email" id="register-email" name="register-email" required>
+
+        <label for="register-phone">Phone:</label>
+        <input type="text" id="register-phone" name="register-phone">
+
+        <button type="button" onclick="register()">Register</button>
+    </form>
+
+    <script>
+        // ... (existing script)
+
+        function register() {
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            const email = document.getElementById('register-email').value;
+            const phone = document.getElementById('register-phone').value;
+
+            // In your client-side JavaScript
+            fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: 'example',
+                    password: 'password',
+                    email: 'example@example.com',
+                    phone: '1234567890',
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Redirect to the specified URL
+                        window.location.href = 'login.html';
+                    } else {
+                        // Handle registration failure if needed
+                        console.error('Registration failed');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error during registration:', error);
+                });
+
+        }
+    </script>
+</body>
+
+</html>

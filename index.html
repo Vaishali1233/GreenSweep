@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Add this in the <head> section of your HTML -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoDB Example</title>
+</head>
+
+<body>
+    <h2>Add Data to MongoDB</h2>
+    <form id="data-form" enctype="multipart/form-data">
+        <label for="name">Description:</label>
+        <input type="text" id="name" name="name" required>
+        <!-- Add this to your form in index.html -->
+        <input type="hidden" id="username" name="username" value="sampleUsername">
+
+        <label for="category">Category:</label>
+        <select id="category" name="category" required>
+            <option value="Overflowed Dustbins">Overflowed Dustbins</option>
+            <option value="Illegal Dumping">Illegal Dumping</option>
+            <option value="Need of Dustbins">Need of Dustbins</option>
+            <option value="High Garbage">High Garbage</option>
+        </select>
+
+        <label for="image">Upload Image (JPG/PNG):</label>
+        <input type="file" id="image" name="image" accept="image/jpeg, image/png">
+
+        <button type="button" onclick="submitData()">Add Data</button>
+        <button onclick="goToMap()">Go to Map</button>
+
+    </form>
+
+    <script>
+        // function submitData() {
+        //     const name = document.getElementById('name').value;
+        //     // const age = document.getElementById('age').value;
+        //     const category = document.getElementById('category').value;
+        //     const imageInput = document.getElementById('image');
+        //     const imageFile = imageInput.files[0];
+
+        //     const formData = new FormData();
+        //     formData.append('name', name);
+        //     // formData.append('age', age);
+        //     formData.append('category', category);
+        //     formData.append('image', imageFile);
+
+        //     navigator.geolocation.getCurrentPosition(
+        //         (position) => {
+        //             const latitude = position.coords.latitude;
+        //             const longitude = position.coords.longitude;
+        //             formData.append('latitude', latitude);
+        //             formData.append('longitude', longitude);
+
+        //             fetch('/add-data', {
+        //                 method: 'POST',
+        //                 body: formData,
+        //             })
+        //                 .then(response => response.json())
+        //                 .then(data => {
+        //                     console.log('Server response:', data);
+        //                     alert('Data added successfully');
+        //                 })
+        //                 .catch(error => {
+        //                     console.error('Error adding data:', error);
+        //                     alert('Error adding data');
+        //                 });
+        //         },
+        //         (error) => {
+        //             console.error('Error getting location:', error.message);
+        //             alert('Error getting location. Please try again.');
+        //         }
+        //     );
+        // }
+
+        // Update the submitData function in index.html
+        function submitData() {
+            const name = document.getElementById('name').value;
+            const category = document.getElementById('category').value;
+            const imageInput = document.getElementById('image');
+            const imageFile = imageInput.files[0];
+
+            // Get the username from the URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const username = urlParams.get('username');
+
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('category', category);
+            formData.append('image', imageFile);
+            formData.append('username', username); // Include the username
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    formData.append('latitude', latitude);
+                    formData.append('longitude', longitude);
+
+                    fetch('/add-data', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Server response:', data);
+                            alert('Data added successfully');
+                        })
+                        .catch(error => {
+                            console.error('Error adding data:', error);
+                            alert('Error adding data');
+                        });
+                },
+                (error) => {
+                    console.error('Error getting location:', error.message);
+                    alert('Error getting location. Please try again.');
+                }
+            );
+        }
+
+
+
+
+    </script>
+    <script>
+        function goToMap() {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    window.location.href = `map.html?lat=${latitude}&lon=${longitude}`;
+                },
+                (error) => {
+                    console.error('Error getting location:', error.message);
+                    alert('Error getting location. Please try again.');
+                }
+            );
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <form id="login-form">
+        <label for="login-username">Username:</label>
+        <input type="text" id="login-username" name="login-username" required>
+
+        <label for="login-password">Password:</label>
+        <input type="password" id="login-password" name="login-password" required>
+
+        <button type="button" onclick="login()">Login</button>
+
+        <p id="login-error" style="color: red; display: none;"></p>
+    </form>
+
+    <button onclick="redirectToRegister()">Register</button>
+
+    <script>
+        // function login() {
+        //     const username = document.getElementById('login-username').value;
+        //     const password = document.getElementById('login-password').value;
+
+        //     fetch('/login', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({
+        //             username: username,
+        //             password: password,
+        //         }),
+        //     })
+        //     .then(response => {
+        //         if (!response.ok) {
+        //             throw new Error('Invalid credentials');
+        //         }
+        //         return response.json();
+        //     })
+        //     .then(data => {
+        //         console.log('Server response:', data);
+        //         alert('Login successful');
+        //         window.location.href = 'index.html';
+        //     })
+        //     .catch(error => {
+        //         console.error('Error during login:', error);
+        //         document.getElementById('login-error').innerText = 'Invalid credentials. Please check your username and password.';
+        //         document.getElementById('login-error').style.display = 'block';
+        //     });
+        // }
+        function login() {
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password,
+        }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Invalid credentials');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Server response:', data);
+
+        // Set the username in a variable instead of the hidden field
+        const loggedInUsername = data.username;
+
+        alert('Login successful');
+        window.location.href = `index.html?username=${loggedInUsername}`;
+    })
+    .catch(error => {
+        console.error('Error during login:', error);
+        document.getElementById('login-error').innerText = 'Invalid credentials. Please check your username and password.';
+        document.getElementById('login-error').style.display = 'block';
+    });
+}
+
+
+
+    function redirectToRegister() {
+        console.log('Redirecting to register.html'); 
+        window.location.href = 'register.html';
+    }
+
+    </script>
+</body>
+</html>

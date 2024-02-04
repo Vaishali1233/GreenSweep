@@ -1,0 +1,35 @@
+<!-- map.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" /> -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Page</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <div id="map" style="height: 400px;"></div>
+<script src="map.js"></script>
+<script>
+    // Get latitude and longitude from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const latitude = parseFloat(urlParams.get('lat')) || 0;
+    const longitude = parseFloat(urlParams.get('lon')) || 0;
+
+    // Initialize the map with the provided latitude and longitude
+    const map = L.map('map').setView([latitude, longitude], 12);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Add a marker for the initial location
+    L.marker([latitude, longitude]).addTo(map)
+        .bindPopup('Initial Location').openPopup();
+</script>
+  
+</body>
+</html>
